@@ -430,3 +430,35 @@ function downloadHTML(textToWrite, fileNameToSaveAs) {
     a.click();
     document.body.removeChild(a);
 }
+
+function copyShareableLink() {
+    const { notepad } = selector();
+    const currentNote = notepad.note.val();
+
+    if (!currentNote || currentNote.trim() === '') {
+        showToast('Cannot share an empty note!');
+        return;
+    }
+
+    try {
+        const compressedNote = LZString.compressToEncodedURIComponent(currentNote);
+        
+        const shareUrl = `${window.location.origin}${window.location.pathname}?note=${compressedNote}`;
+
+        navigator.clipboard.writeText(shareUrl).then(function () {
+            Swal.fire({
+                title: 'Link Copied!',
+                text: 'A compressed link to your note is in your clipboard.',
+                icon: 'success',
+                timer: 2000,
+                showConfirmButton: false
+            });
+        }, function () {
+            showToast('Failed to copy link to clipboard.');
+        });
+
+    } catch (e) {
+        console.error('Compression error:', e);
+        showToast('Error generating link.');
+    }
+}

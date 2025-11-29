@@ -121,7 +121,7 @@
             </a>
           </span>
           <span title="Share Notes across system apps" id="shareNotesContainer">
-            <a id="shareNotes" title="Share Notes across system apps">
+            <a id="shareNotes" title="Share Notes across system apps" onclick="copyShareableLink()">
               <span>
                 <img
                   src="img/navbar/share.svg"
@@ -843,7 +843,8 @@
       favicon.setAttribute("href", `/favicon${hidden ? "-hidden" : ""}.ico`)
     })
   </script>
-
+  
+  <script src="js/libraries/lz-string.min.js"></script>
   <script src="js/libraries/jquery.min.js"></script>
   <script src="js/libraries/bootstrap.min.js"></script>
   <script src="js/libraries/sweetalert2.all.min.js"></script>

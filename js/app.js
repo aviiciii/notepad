@@ -814,6 +814,84 @@ $(document).ready(function () {
 		}
 		localStorage.setItem('monospaced', e.target.checked);
 	});
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const sharedNoteCompressed = urlParams.get('note');
+
+    if (sharedNoteCompressed) {
+        try {
+            // 1. DECOMPRESS
+            let sharedNote = LZString.decompressFromEncodedURIComponent(sharedNoteCompressed);
+
+            if (!sharedNote) { 
+                throw new Error("Decompression failed or empty content"); 
+            }
+
+            // Get current value directly from DOM to ensure accuracy
+            const currentNote = $('#note').val() || '';
+
+            // Helper to clean URL
+            const cleanURL = () => {
+                const newUrl = window.location.origin + window.location.pathname;
+                window.history.replaceState({}, document.title, newUrl);
+            };
+
+            // Helper to update the UI and Save
+            const updateNote = (text) => {
+                notepad.note.val(text);
+                setState('note', text);
+                notepad.wordCount.text(calculateCharactersAndWords(text));
+                cleanURL();
+            };
+
+            // Scenario A: Local note is empty -> Override immediately
+            if (currentNote.trim() === '') {
+                updateNote(sharedNote);
+                showToast('Shared note loaded!');
+            } 
+            // Scenario B: Local note exists -> Ask user
+            // Scenario B: Local note exists -> Ask user
+            else if (currentNote !== sharedNote) {
+                Swal.fire({
+                    title: 'Incoming Shared Note',
+                    text: "You already have text here. How do you want to handle the incoming note?",
+                    icon: 'question',
+                    showCancelButton: true,
+                    // SWAPPED: Confirm is now "Append" (Ideal option)
+                    confirmButtonText: 'Append to bottom',
+                    confirmButtonColor: '#3085d6', // Blue (Safe/Default)
+                    
+                    // SWAPPED: Cancel is now "Replace" (Destructive option)
+                    cancelButtonText: 'Replace existing', 
+                    cancelButtonColor: '#d33', // Red (Destructive)
+                    
+                    showCloseButton: true,
+                    allowOutsideClick: false
+                }).then((result) => {
+                    // Logic is inverted to match new button roles
+                    if (result.value) {
+                        // User clicked "Append to bottom" (Confirm)
+                        const newText = currentNote + "\n\n--- Shared Note ---\n" + sharedNote;
+                        updateNote(newText);
+
+                    } else if (result.dismiss === Swal.DismissReason.cancel) {
+                        // User clicked "Replace existing" (Cancel button slot)
+                        updateNote(sharedNote);
+
+                    }
+                    // If result.dismiss === Swal.DismissReason.close, we do nothing (User ignored it)
+                });
+            } else {
+                cleanURL(); // Notes are identical
+            }
+        } catch (e) {
+            console.error('Error reading shared note:', e);
+            showToast('Link might be broken or copied incorrectly.');
+        }
+    }
+
+
+
 });
 
 document.addEventListener("fullscreenchange", function () {
