@@ -1,71 +1,18 @@
 $(document).ready(function () {
-	const toastLinks = [
-		{
-			text: "Support Notepad's sustainable development — Buy me a coffee! ❤️",
-			url: "https://buymeacoffee.com/amitmerchant",
-			active: false
-		},
-		{
-			text: "I work on this app in my spare time. Buy me a coffee for your support!",
-			url: "https://buymeacoffee.com/amitmerchant",
-			active: true
-		},
-		{
-			text: "Support this app if you can!",
-			url: "https://buymeacoffee.com/amitmerchant",
-			active: false
-		},
-		{
-			text: "This app is intentionally kept ad-free. If you appreciate that, buy me a coffee. Thank you! ❤️",
-			url: "https://buymeacoffee.com/amitmerchant",
-			active: true
-		},
-		{
-			text: "If every regular user contributed the cost of one coffee, I could accelerate development dramatically!",
-			url: "https://buymeacoffee.com/amitmerchant",
-			active: false
-		},
-		{
-			text: "If you enjoy using this app, consider buying me a coffee to support it! ❤️",
-			url: "https://buymeacoffee.com/amitmerchant",
-			active: false
-		},
-		{
-			text: "Your support keeps this app going — leave a tip if you can! ❤️",
-			url: "https://buymeacoffee.com/amitmerchant",
-			active: false
-		},
-		{
-			text: "Love the ad-free experience? Buy me a coffee to keep it that way!",
-			url: "https://buymeacoffee.com/amitmerchant",
-			active: false
-		},
-		{
-			text: "Send anonymous feature suggestions",
-			url: "https://docs.google.com/forms/d/1NuSl4FzUXRR6maOaGNfUmBdNJ-l9neBzzp_JwDm3xZI",
-			active: false
-		},
-		{
-			text: "We rely on the supporters like you to keep Notepad thriving!",
-			url: "https://buymeacoffee.com/amitmerchant",
-			active: false
-		},
-		{
-			text: "🚀 New tool → Case Converter",
-			url: "/case-converter",
-			active: false
-		},
-		{
-			isFeature: true,
-			isActive: true,
-			text: "New → Mimic typewriter sound when typing. Enable it from the Preferences popup.",
-			url: "#preferencesModal",
-			dataTarget: "#preferencesModal",
-			active: true
-		}
-	];
-
-	// Function to show a random link
+	// const toastLinks = [
+	// 	{
+	// 		text: "Vanakam!",
+	// 		url: "https://lvsh.qzz.io",
+	// 		active: false
+	// 	},
+	// 	{
+	// 		text: "I didn't work on this app in my spare time :(",
+	// 		url: "https://dontbuymeacoffee.com/aviiciii",
+	// 		active: true
+	// 	},
+	// ];
+	
+	const toastLinks = [];
 	function showRandomToastLink() {
 		const activeLinks = toastLinks.filter(link => link.active);
 		const randomIndex = Math.floor(Math.random() * activeLinks.length);
@@ -108,35 +55,7 @@ $(document).ready(function () {
 	// Show toast popup after a delay
 	setTimeout(showRandomToastLink, 5000);
 
-	const welcomeText = `Welcome! This is an offline-capable Notepad which is a Progressive Web App.
-
-The app serves the following features:
-
-- Your notes are saved in real-time as you type.
-- Installable on supported browsers for offline usage.
-- "Add To Home Screen" feature on Android-supported devices to launch the app from the home screen.
-- Dark mode.
-- Privacy-focused - Never collects your precious data.
-- Light-weight - Loads almost instantly.
-- Writing timer.
-- View Note Statistics.
-- Ability to mimic typewriter sound when typing.
-- Keyboard shortcuts for common actions.
-- Focus mode to leave you with a barebones and pristine editor.
-- Full-screen mode for a distraction-free writing experience.
-- Floating window (in supported browsers) to effectively take notes across other apps.
-- Download notes as plain text, PDF, HTML, and DOCX file.
-- Ability to play ambient noise to help you focus.
-- It's proudly open-source!
-
-CAUTION: Since the app uses the browser's localStorage to store your notes, 
-it's recommended that you take a backup of your notes more often using the 
-"Download Notes" button or by pressing the "Ctrl/Cmd + S" keys.
-
-Lastly, if you're using Notepad, and want to support the development, 
-you can buy me a coffee — the link of which is available in the About section.
-
-** Delete this text and start writing your notes **`;
+	const welcomeText = ``;
 
 	const darkmodeText = 'Enable dark mode [Ctrl/Cmd + M]';
 	const lightmodeText = 'Enable light mode [Ctrl/Cmd + M]';
@@ -523,10 +442,7 @@ you can buy me a coffee — the link of which is available in the About section.
 		$('#statMostCommonWord').text(stats.mostCommonWord);
 	});
 
-	notepad.closeDonationPopup.click(function () {
-		notepad.stickyNotice.remove();
-		setState('hasUserDismissedDonationPopup', 'true');
-	});
+	
 
 	notepad.fontSize.on('change', function (e) {
 		const fontSizeSelected = this.value;
@@ -929,44 +845,26 @@ window.addEventListener('beforeinstallprompt', (e) => {
 			deferredPrompt = null;
 		}
 
-		ga('send', {
-			hitType: 'event',
-			eventCategory: 'pwa-install',
-			eventAction: 'native-installation-card-prompted',
-			eventLabel: installSource,
-			eventValue: choiceResult.outcome === 'accepted' ? 1 : 0
-		});
 	});
 });
 
-const installApp = document.getElementById('installApp');
+// const installApp = document.getElementById('installApp');
 
-installApp.addEventListener('click', async () => {
-	installSource = 'customInstallationButton';
+// installApp.addEventListener('click', async () => {
+// 	installSource = 'customInstallationButton';
 
-	if (deferredPrompt !== null) {
-		deferredPrompt.prompt();
-		const { outcome } = await deferredPrompt.userChoice;
-		if (outcome === 'accepted') {
-			deferredPrompt = null;
-		}
+// 	if (deferredPrompt !== null) {
+// 		deferredPrompt.prompt();
+// 		const { outcome } = await deferredPrompt.userChoice;
+// 		if (outcome === 'accepted') {
+// 			deferredPrompt = null;
+// 		}
 
-		ga('send', {
-			hitType: 'event',
-			eventCategory: 'pwa-install',
-			eventAction: 'custom-installation-button-clicked',
-			eventLabel: installSource,
-			eventValue: outcome === 'accepted' ? 1 : 0
-		});
-	} else {
-		showToast('Notepad is already installed.')
-	}
-});
+// 		
+// });
 
 window.addEventListener('appinstalled', () => {
 	deferredPrompt = null;
 
 	const source = installSource || 'browser';
-
-	ga('send', 'event', 'pwa-install', 'installed', source);
 });
