@@ -11,6 +11,21 @@ $(document).ready(function () {
 			active: true
 		},
 		{
+			text: "Support this app if you can!",
+			url: "https://buymeacoffee.com/amitmerchant",
+			active: false
+		},
+		{
+			text: "This app is intentionally kept ad-free. If you appreciate that, buy me a coffee. Thank you! ❤️",
+			url: "https://buymeacoffee.com/amitmerchant",
+			active: true
+		},
+		{
+			text: "If every regular user contributed the cost of one coffee, I could accelerate development dramatically!",
+			url: "https://buymeacoffee.com/amitmerchant",
+			active: false
+		},
+		{
 			text: "If you enjoy using this app, consider buying me a coffee to support it! ❤️",
 			url: "https://buymeacoffee.com/amitmerchant",
 			active: false
@@ -23,7 +38,7 @@ $(document).ready(function () {
 		{
 			text: "Love the ad-free experience? Buy me a coffee to keep it that way!",
 			url: "https://buymeacoffee.com/amitmerchant",
-			active: true
+			active: false
 		},
 		{
 			text: "Send anonymous feature suggestions",
@@ -36,11 +51,6 @@ $(document).ready(function () {
 			active: false
 		},
 		{
-			text: "18477h51878 became a monthly supporter!",
-			url: "https://buymeacoffee.com/amitmerchant/c/16054770",
-			active: true
-		},
-		{
 			text: "🚀 New tool → Case Converter",
 			url: "/case-converter",
 			active: false
@@ -48,10 +58,10 @@ $(document).ready(function () {
 		{
 			isFeature: true,
 			isActive: true,
-			text: "→ Try Writing Timer",
-			url: "#timerModal",
-			dataTarget: "#timerModal",
-			active: false
+			text: "New → Mimic typewriter sound when typing. Enable it from the Preferences popup.",
+			url: "#preferencesModal",
+			dataTarget: "#preferencesModal",
+			active: true
 		}
 	];
 
@@ -76,9 +86,23 @@ $(document).ready(function () {
 		}
 	}
 
+	// Function to close toast with animation
+	function closeToastPopup() {
+		const $toast = $('#toastPopup');
+		$toast.addClass('hide');
+		setTimeout(function () {
+			$toast.removeClass('show hide');
+		}, 500);
+	}
+
 	// Close toast popup
 	$('#closeToastPopup').on('click', function () {
-		$('#toastPopup').removeClass('show');
+		closeToastPopup();
+	});
+
+	// Close toast popup when link is clicked
+	$('#toastLink').on('click', function () {
+		closeToastPopup();
 	});
 
 	// Show toast popup after a delay
@@ -95,7 +119,10 @@ The app serves the following features:
 - Privacy-focused - Never collects your precious data.
 - Light-weight - Loads almost instantly.
 - Writing timer.
+- View Note Statistics.
+- Ability to mimic typewriter sound when typing.
 - Keyboard shortcuts for common actions.
+- Focus mode to leave you with a barebones and pristine editor.
 - Full-screen mode for a distraction-free writing experience.
 - Floating window (in supported browsers) to effectively take notes across other apps.
 - Download notes as plain text, PDF, HTML, and DOCX file.
@@ -119,18 +146,7 @@ you can buy me a coffee — the link of which is available in the About section.
 	const { notepad, state, setState, removeState, get } = selector();
 	const optimalLineLengthPadding = '15px 15vw 40px';
 
-	const editorConfig = {
-		defaultFontSize: 18,
-		defaultLineHeight: 26,
-		defaultFontWeight: 'normal',
-		defaultShowWordCountPill: 'Yes',
-		defaultWriteDirection: 'ltr',
-		defaultOptimalLineLength: false,
-		defaultOptimalLineLengthPadding: '15px 24px 40px',
-		defaultSpellCheck: true,
-		defaultTabIndentation: false,
-		defaultTransparentWordCountPillSelected: false
-	};
+	const editorConfig = selector().defaultConfig;
 
 	const themeConfig = {
 		lightmodeText,
@@ -142,6 +158,116 @@ you can buy me a coffee — the link of which is available in the About section.
 
 	const noteItem = state.note && state.note != '' ? state.note : welcomeText;
 	const characterAndWordCountText = calculateCharactersAndWords(noteItem);
+
+	let typewriterSoundEnabled;
+	const typeSound = new Audio('/sounds/typewriter/typewriter-key-press-02.mp3');
+	const carriageReturnSound = new Audio('/sounds/typewriter/typewriter-carriage-return-01.mp3');
+	typeSound.volume = 0.2; // keep it subtle
+	const userChosenTypewriterSound = state.userChosenTypewriterSound;
+	const userChosenTypewriterVolume = state.userChosenTypewriterVolume;
+
+	// Initialize typewriter sound preference
+	if (!userChosenTypewriterSound) {
+		typewriterSoundEnabled = editorConfig.defaultTypewriterSound;
+		$('#typewriterSound').prop('checked', typewriterSoundEnabled);
+	} else {
+		typewriterSoundEnabled = userChosenTypewriterSound == 'Yes';
+		$('#typewriterSound').prop('checked', typewriterSoundEnabled);
+	}
+
+	if (typewriterSoundEnabled) {
+		$('.typewriter-switch-volume').show();
+	} else {
+		$('.typewriter-switch-volume').hide();
+	}
+
+	if (!userChosenTypewriterVolume) {
+		$('#typewriterVolume').val(editorConfig.defaultTypewriterVolume);
+		$('#typewriterVolumeValue').text(editorConfig.defaultTypewriterVolume + '%');
+	}else {
+		$('#typewriterVolume').val(userChosenTypewriterVolume);
+		$('#typewriterVolumeValue').text(userChosenTypewriterVolume + '%');
+	}
+	
+	function playTypeSound() {
+		if (!typewriterSoundEnabled) return;
+		
+		// Clone so rapid typing doesn't cut the previous sound
+		const s = typeSound.cloneNode();
+
+		// Add random pitch for realism (±5% variation)
+		s.playbackRate = 0.95 + Math.random() * 0.1;
+		const currentVolume = localStorage.getItem('userChosenTypewriterVolume');
+		s.volume = currentVolume ? (currentVolume / 100) : (editorConfig.defaultTypewriterVolume / 100);
+		s.play();
+	}
+
+	notepad.note.on('keydown', (e) => {
+		if (e.key === 'Enter') {
+			if (typewriterSoundEnabled) {
+				const s = carriageReturnSound.cloneNode();
+				const currentVolume = localStorage.getItem('userChosenTypewriterVolume');
+				s.volume = currentVolume ? (currentVolume / 100) : (editorConfig.defaultTypewriterVolume / 100);
+				s.play();
+			}
+
+			return;
+		}
+
+		const isPrintable = (
+			// Single character keys (letters, numbers, symbols)
+			e.key.length === 1 || 
+			// Common editing keys
+			[
+				'Delete', 'Backspace', 'Enter', ' ', 'Space', 
+				'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown',
+				'Home', 'End', 'PageUp', 'PageDown'
+			].includes(e.key) ||
+			// Mobile-specific keys and special cases
+			e.key === 'Unidentified' ||  // Some mobile keyboards
+			e.key === 'Process' ||       // Some IME inputs
+			e.key === 'Dead' ||          // Dead keys (for accents)
+			e.key === 'Compose'          // Compose key
+		);
+
+		if (isPrintable) {
+			playTypeSound();
+		}
+	});
+
+	// Handle typewriter sound toggle
+	$('#typewriterSound').on('change', function() {
+		const isEnabled = $(this).is(':checked');
+		localStorage.setItem('userChosenTypewriterSound', isEnabled ? 'Yes' : 'No');
+		typewriterSoundEnabled = isEnabled;
+
+		if (isEnabled) {
+			$('.typewriter-switch-volume').show();
+		} else {
+			$('.typewriter-switch-volume').hide();
+		}
+	});
+
+	// Handle typewriter volume change
+	let volumePreviewTimer = null;
+	$('#typewriterVolume').on('input', function() {
+		const volume = $(this).val();
+		localStorage.setItem('userChosenTypewriterVolume', volume);
+
+		if (typewriterSoundEnabled) {
+			typeSound.volume = volume / 100;
+			carriageReturnSound.volume = volume / 100;
+			$('#typewriterVolumeValue').text(volume + '%');
+		}
+
+		// Clear previous preview timer
+		clearTimeout(volumePreviewTimer);
+
+		// Set new preview timer (user stopped sliding for 500ms)
+		volumePreviewTimer = setTimeout(() => {
+			playTypeSound();
+		}, 500);
+	});
 
 	notepad.wordCount.text(characterAndWordCountText);
 	notepad.note.val(noteItem);
@@ -374,6 +500,29 @@ you can buy me a coffee — the link of which is available in the About section.
 		toggleFullScreen();
 	})
 
+	notepad.focusModeButton.click(function () {
+		toggleFocusMode(notepad);
+	})
+
+	notepad.focusModeCloseButton.click(function () {
+		turnOffFocusMode(notepad);
+	})
+
+	// Update statistics when modal is shown
+	notepad.statisticsModal.on('show.bs.modal', function () {
+		const noteText = notepad.note.val();
+		const stats = calculateNoteStatistics(noteText);
+
+		$('#statWords').text(stats.words);
+		$('#statCharacters').text(stats.characters);
+		$('#statSentences').text(stats.sentences);
+		$('#statParagraphs').text(stats.paragraphs);
+		$('#statAvgWordLength').text(stats.averageWordLength);
+		$('#statReadingTime').text(stats.readingTime);
+		$('#statUniqueWords').text(stats.uniqueWords);
+		$('#statMostCommonWord').text(stats.mostCommonWord);
+	});
+
 	notepad.closeDonationPopup.click(function () {
 		notepad.stickyNotice.remove();
 		setState('hasUserDismissedDonationPopup', 'true');
@@ -517,6 +666,19 @@ you can buy me a coffee — the link of which is available in the About section.
 			notepad.transparentWordCountPill.prop('checked', editorConfig.defaultTransparentWordCountPillSelected);
 		}
 
+		if (selector().state.userChosenTypewriterSound) {
+			removeState('userChosenTypewriterSound');
+			typewriterSoundEnabled = editorConfig.defaultTypewriterSound;
+			$('#typewriterSound').prop('checked', typewriterSoundEnabled);
+			$('.typewriter-switch-volume').hide();
+		}
+
+		if (selector().state.userChosenTypewriterVolume) {
+			removeState('userChosenTypewriterVolume');
+			$('#typewriterVolume').val(editorConfig.defaultTypewriterVolume);
+			$('#typewriterVolumeValue').text(editorConfig.defaultTypewriterVolume + '%');
+		}
+
 		// Reset to device theme as default
 		$('input[name="themes"][value="device"]').prop('checked', true);
 		enableDeviceTheme(themeConfig);
@@ -649,6 +811,7 @@ you can buy me a coffee — the link of which is available in the About section.
 			$('.modal').modal('hide');
 			$('#iconDropdown').removeClass('show');
 			$('#moreToolsDropdown').removeClass('show');
+			turnOffFocusMode(notepad);
 		}
 
 		if ((event.ctrlKey || event.metaKey) && event.code === 'KeyS') {

@@ -50,7 +50,7 @@
             <span class="icon-bar"></span>
           </button>
         </span>
-        <span><a class="navbar-brand app-heading glow-text" href="#">Notepad</a></span>
+        <span><a class="navbar-brand app-heading glow-text tilt-css" href="#"><span>N</span><span>o</span><span>t</span><span>e</span><span>p</span><span>a</span><span>d</span></a></span>
         <span class="icon-container">
           <span class="more-tools-container">
             <a id="moreTools" class="dropdown-icon" title="More Tools">
@@ -140,6 +140,22 @@
       </div>
       <div id="navbar" class="collapse navbar-collapse">
         <ul class="nav navbar-nav navbar-flex">
+          <li class="focus-mode-icon">
+            <a href="javascript:void(0);" id="focusModeButton" title="Turn On Focus Mode [alt/Option + F]">
+              <svg width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#ffffff" stroke="#ffffff"
+                stroke-width="0.72">
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                <g id="SVGRepo_iconCarrier">
+                  <g>
+                    <path
+                      d="M12 20a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm0 2C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-8a2 2 0 1 1 0-4 2 2 0 0 1 0 4z">
+                    </path>
+                  </g>
+                </g>
+              </svg>
+            </a>
+          </li>
           <li class="keyboard-icon" id="pipContainer" title="Activate Floating Window">
             <a id="pip" class="pip-icon">
               <img
@@ -171,6 +187,14 @@
     <div class="overlay"></div>
   </nav>
 
+  <div id="focusModeCloseButton" class="focus-mode-close-btn" style="display: none;">
+    <button id="closeFocusMode" title="Exit Focus Mode [Press Escape]">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+  </div>
+
   <div id="mainContainer">
     <div class="container" id="textareaContainer">
       <div class="starter-template">
@@ -188,6 +212,26 @@
         </div>
         <div class="word-count-container">
           <p id="wordCount">0 character • 0 word</p>
+          <a href="#statistics" data-toggle="modal" data-target="#statisticsModal"
+              title="View Note Statistics">
+            <svg width="10" height="10" viewBox="-3 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" fill="currentColor"
+              stroke="#000000">
+              <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+              <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+              <g id="SVGRepo_iconCarrier">
+                <title>View Note Statistics</title>
+                <defs> </defs>
+                <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+                  <g id="Icon-Set-Filled" sketch:type="MSLayerGroup" transform="translate(-314.000000, -673.000000)" fill="currentColor">
+                    <path
+                      d="M328,673 L326,673 C324.896,673 324,673.896 324,675 L324,703 C324,704.104 324.896,705 326,705 L328,705 C329.104,705 330,704.104 330,703 L330,675 C330,673.896 329.104,673 328,673 L328,673 Z M338,689 L336,689 C334.896,689 334,689.896 334,691 L334,703 C334,704.104 334.896,705 336,705 L338,705 C339.104,705 340,704.104 340,703 L340,691 C340,689.896 339.104,689 338,689 L338,689 Z M318,682 L316,682 C314.896,682 314,682.896 314,684 L314,703 C314,704.104 314.896,705 316,705 L318,705 C319.104,705 320,704.104 320,703 L320,684 C320,682.896 319.104,682 318,682 L318,682 Z"
+                      id="stats" sketch:type="MSShapeGroup"> </path>
+                  </g>
+                </g>
+              </g>
+            </svg>
+          </a>
         </div>
         <div class="coffee-icon">
           <a href="https://buymeacoffee.com/amitmerchant" target="_blank" title="Buy Me a Coffee">
@@ -263,8 +307,11 @@
                 <li><b>Writing timer</b>.</li>
                 <li><b>Privacy-focused</b> — Never collect your precious data.</li>
                 <li><b>Light-weight</b> — Loads almost instantly.</li>
+                <li><b>Focus mode</b> to leave you with a barebones and pristine editor.</li>
                 <li><b>Full-screen mode</b> for a distraction-free writing experience.</li>
                 <li><b>Optimal line length</b> for better reading experience.</li>
+                <li>View <b>Note Statistics</b>.</li>
+                <li>Ability to mimic <b>typewriter (Hermes Precisa 305 model) sound</b> when typing.</li>
                 <li>Supports <b>monospaced</b> and <b>dyslexic fonts</b>.</li>
                 <li><b>Floating window</b> (in supported browsers) to effectively take notes across other apps.</li>
                 <li>Download notes as <b>plain text</b>, <b>PDF</b>, <b>HTML</b>, and <b>DOCX</b>.</li>
@@ -291,6 +338,8 @@
                 target="_blank">donate</a> to this project. Donations like these keeps me motivated to continue working on this little project.</p>
               <p>I'm very grateful to them for their support. 🙏</p>
               <ul>
+                <li><b><a href="https://buymeacoffee.com/amitmerchant/c/16306153" target="_blank">Areanne</a></b></li>
+                <li><b><a href="https://buymeacoffee.com/amitmerchant/c/16223544" target="_blank">Sajjad</a></b></li>
                 <li><b><a href="https://buymeacoffee.com/amitmerchant/c/16054770" target="_blank">18477h51878 is a monthly supporter</a></b></li>
                 <li><b><a href="https://buymeacoffee.com/amitmerchant/c/15702975" target="_blank">FupsennodRidesAgain</a></b></li>
                 <li><b><a href="https://buymeacoffee.com/amitmerchant/c/15556279" target="_blank">Pablo</a></b></li>
@@ -346,6 +395,21 @@
             </div>
 
             <div id="changelog" class="container tab-pane fade">
+              <h4>29th Nov, 2025</h3>
+              <ul>
+                <li>Added an option to mimic typewriter (Hermes Precisa 305 model) sound when typing. This can be enabled from the preferences.</li>
+              </ul>
+
+              <h4>17th Nov, 2025</h3>
+              <ul>
+                <li>Added an option to view note statistics in the word count pill.</li>
+              </ul>
+
+              <h4>14th Nov, 2025</h3>
+              <ul>
+                <li>Added a convenient button in the navbar to toggle focus mode [alt/Option + F]. Also, a button to close focus mode.</li>
+              </ul>
+
               <h4>27th Jul, 2025</h3>
               <ul>
                 <li>Added an option in the preferences to change the style of the word count pill to frosted glass.</li>
@@ -526,7 +590,9 @@
               <svg width="30" height="30" viewBox="-4.32 -4.32 56.64 56.64" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect width="48" height="48" fill="white" fill-opacity="0.01"></rect> <path fill-rule="evenodd" clip-rule="evenodd" d="M24 4C12.9543 4 4 12.9543 4 24C4 35.0457 12.9543 44 24 44C35.0457 44 44 35.0457 44 24C44 12.9543 35.0457 4 24 4ZM0 24C0 10.7452 10.7452 0 24 0C37.2548 0 48 10.7452 48 24C48 37.2548 37.2548 48 24 48C10.7452 48 0 37.2548 0 24Z" fill="#000000"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M19.183 45.4715C18.9896 45.2218 18.9896 42.9972 19.183 38.798C17.1112 38.8695 15.8022 38.7257 15.256 38.3666C14.4368 37.8279 13.6166 36.1666 12.8889 34.9958C12.1612 33.825 10.546 33.6399 9.8938 33.3782C9.24158 33.1164 9.07785 32.0495 11.691 32.8564C14.3042 33.6633 14.4316 35.8606 15.256 36.3744C16.0804 36.8882 18.0512 36.6634 18.9446 36.2518C19.8379 35.8402 19.7722 34.3077 19.9315 33.7006C20.1329 33.1339 19.423 33.0082 19.4074 33.0036C18.5353 33.0036 13.9537 32.0072 12.6952 27.5705C11.4368 23.1339 13.0579 20.234 13.9227 18.9874C14.4992 18.1563 14.4482 16.3851 13.7697 13.6736C16.2333 13.3588 18.1344 14.1342 19.4732 16C19.4745 16.0107 21.2283 14.9571 24 14.9571C26.7718 14.9571 27.7551 15.8153 28.514 16C29.2728 16.1847 29.8798 12.734 34.5666 13.6736C33.5881 15.5968 32.7686 18 33.3941 18.9874C34.0195 19.9748 36.4742 23.1146 34.9664 27.5705C33.9611 30.5412 31.9851 32.3522 29.0382 33.0036C28.7002 33.1114 28.5313 33.2854 28.5313 33.5254C28.5313 33.8855 28.9881 33.9248 29.6463 35.6116C30.085 36.7361 30.1167 39.9479 29.7413 45.2469C28.7904 45.489 28.0506 45.6515 27.5219 45.7346C26.5845 45.8819 25.5667 45.9645 24.5666 45.9964C23.5666 46.0283 23.2193 46.0247 21.8368 45.896C20.9151 45.8102 20.0305 45.6687 19.183 45.4715Z" fill="#000000"></path> </g></svg>
             </a>
             <a href="mailto:bullredeyes@gmail.com" class="email-icon" title="Send feedback or say hi!">
-              <svg width="29" height="29" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8L8.44992 11.6333C9.73295 12.4886 10.3745 12.9163 11.0678 13.0825C11.6806 13.2293 12.3194 13.2293 12.9322 13.0825C13.6255 12.9163 14.2671 12.4886 15.5501 11.6333L21 8M6.2 19H17.8C18.9201 19 19.4802 19 19.908 18.782C20.2843 18.5903 20.5903 18.2843 20.782 17.908C21 17.4802 21 16.9201 21 15.8V8.2C21 7.0799 21 6.51984 20.782 6.09202C20.5903 5.71569 20.2843 5.40973 19.908 5.21799C19.4802 5 18.9201 5 17.8 5H6.2C5.0799 5 4.51984 5 4.09202 5.21799C3.71569 5.40973 3.40973 5.71569 3.21799 6.09202C3 6.51984 3 7.07989 3 8.2V15.8C3 16.9201 3 17.4802 3.21799 17.908C3.40973 18.2843 3.71569 18.5903 4.09202 18.782C4.51984 19 5.07989 19 6.2 19Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+              <svg width="29" height="29" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="#000000" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 12a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Zm0 0c0 1.657 1.007 3 2.25 3S21 13.657 21 12a9 9 0 1 0-2.636 6.364M16.5 12V8.25" />
+              </svg>
             </a>
           </div>
           <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
@@ -809,6 +875,30 @@
           </div>
 
           <div class="form-group">
+            <label class="control-label col-sm-6 col-md-6 generic-flex">
+              Typewriter sound
+              <a href="#" data-toggle="tooltip" title="Enable or disable the typewriter (Hermes Precisa 305 model) sound effect when typing">
+                <img src="img/tooltip.svg" alt="Tooltip" />
+              </a>
+              <span class="new-badge">NEW</span>
+            </label>
+            <div class="col-sm-6 col-md-5">
+              <div class="checkbox checbox-switch generic-flex typewriter-switch">
+                <label>
+                    <input type="checkbox" name="typewriterSound" id="typewriterSound"/>
+                    <span></span>
+                </label>
+                <div class="typewriter-switch-volume">
+                    <div class="volume-control" id="typewriterVolumeControl">
+                        <input type="range" min="0" max="100" value="4" class="volume-slider" id="typewriterVolume">
+                    </div>
+                    <span id="typewriterVolumeValue" title="Typewriter volume"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
             <label class="control-label col-sm-6 col-md-6" for="company">&nbsp;</label>
             <div class="col-sm-6 col-md-5">
               <a href="javascript:void(0);" id="resetPreferences" title="Reset to default preferences">Reset preferences</a>
@@ -927,7 +1017,7 @@
             </div>
             <div class="sound-button" data-sound="fireside">
               <div>
-                <svg width="20" height="20" viewBox="0 0 24 24" id="Flat_Color" data-name="Flat Color" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path id="primary" d="M17.4,8.38A7.1,7.1,0,0,1,15,3a1,1,0,0,0-1.55-.83,10.89,10.89,0,0,0-5,6.73A4.37,4.37,0,0,1,8,7.77,1,1,0,0,0,7.27,7a1,1,0,0,0-1,.25C5,8.58,4,12,4,14c0,5.08,2.92,8,8,8s8-3,8-8C20,11.22,18.62,9.71,17.4,8.38Z" style="fill:#000000"></path></g></svg>
+                <svg version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20" height="20" viewBox="0 0 512 512" xml:space="preserve" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <style type="text/css">  .st0{fill:#000000;}  </style> <g> <path class="st0" d="M407.156,267.128c5.766-72.641-33.688-137.469-88.891-181.625c-28.297-22.625-39.359-47.609-43.609-65.375 c-3.406-14.266-1.609-15.797-1.609-15.797c-0.156-1.703-1.219-3.172-2.75-3.875c-1.563-0.734-3.359-0.578-4.75,0.391 c0,0-5.5,1.188-14.422,9.859c-20.344,19.75-43.359,52.703-28.203,97.75c16.281,48.344,7.672,58.453-0.844,57.797 c-11.047-0.844-12.734-7.656-10.969-28.828c2.047-24.766-20.406-45.906-20.406-45.906s-34.891,55.469-62.094,95.141 c-16.078,23.453-23.781,53.266-23.781,80.469h-0.547c0,83.625,67.797,151.438,151.438,151.438 C339.375,418.566,407.156,350.753,407.156,267.128z M255.984,375.925c-46.125,0-83.547-37.406-83.547-83.547 c0-15.703,4.359-30.406,11.891-42.953c6.5,24.156,28.547,41.953,54.766,41.953c31.297,0,56.688-25.375,56.688-56.672 c0-5.984-0.938-11.75-2.656-17.156c27.5,13.672,46.406,42.031,46.406,74.828C339.531,338.519,302.141,375.925,255.984,375.925z"></path> <path class="st0" d="M196.531,419.332l-74.469,23.109c24.172,4.453,42.563,25.656,42.563,51.094c0,2.203-0.266,4.406-0.547,6.594 l76.766-55.984C240.844,444.145,228.438,421.098,196.531,419.332z"></path> <path class="st0" d="M102.563,452.66c-24.813,0-44.922,20.094-44.922,44.906c0,5.047,0.875,9.906,2.422,14.438h84.984 c1.531-4.531,2.406-9.391,2.406-14.438C147.453,472.754,127.359,452.66,102.563,452.66z"></path> <path class="st0" d="M389.938,442.441l-74.469-23.109c-31.906,1.766-44.313,24.813-44.313,24.813l76.766,55.984 c-0.266-2.188-0.531-4.391-0.531-6.594C347.391,468.098,365.75,446.895,389.938,442.441z"></path> <path class="st0" d="M409.438,452.66c-24.797,0-44.891,20.094-44.891,44.906c0,5.047,0.859,9.906,2.406,14.438h84.984 c1.547-4.531,2.422-9.391,2.422-14.438C454.359,472.754,434.266,452.66,409.438,452.66z"></path> </g> </g></svg>
                 <span>Fireside</span>
               </div>
               <div class="volume-control">
@@ -983,7 +1073,7 @@
             </div>
             <div class="sound-button" data-sound="wind-chimes">
               <div>
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-wind h-4 w-4 shrink-0"><path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2"></path><path d="M9.6 4.6A2 2 0 1 1 11 8H2"></path><path d="M12.6 19.4A2 2 0 1 0 14 16H2"></path></svg>
+                <svg fill="#000000" height="20" width="20" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <path d="M489.739,0H22.261C13.04,0,5.565,7.475,5.565,16.696s7.475,16.696,16.696,16.696h116.87v101.854 c-38.057,7.757-66.783,41.484-66.783,81.799c0,14.585,3.879,28.645,11.529,41.79c2.99,5.137,8.486,8.297,14.429,8.297h40.824 v44.522h-16.696c-9.22,0-16.696,7.475-16.696,16.696v166.956c0,9.22,7.475,16.696,16.696,16.696h66.783 c9.22,0,16.696-7.475,16.696-16.696V328.348c0-9.22-7.475-16.696-16.696-16.696h-16.696V267.13h40.824 c5.944,0,11.44-3.16,14.43-8.297c7.65-13.145,11.529-27.205,11.529-41.79c0-40.314-28.725-74.042-66.783-81.799V33.391h166.957 v68.462c-38.057,7.756-66.783,41.484-66.783,81.799v33.391c0,9.22,7.475,16.696,16.696,16.696h50.087v44.522h-16.696 c-9.22,0-16.696,7.475-16.696,16.696v166.956c0,9.22,7.475,16.696,16.696,16.696h66.783c9.22,0,16.696-7.475,16.696-16.696 V294.957c0-9.22-7.475-16.696-16.696-16.696H372.87v-44.522h50.087c9.22,0,16.696-7.475,16.696-16.696v-33.391 c0-40.314-28.725-74.042-66.783-81.799V33.391h116.87c9.22,0,16.696-7.475,16.696-16.696S498.96,0,489.739,0z M172.522,478.609 H139.13V345.043h33.391V478.609z M205.913,217.043c0,5.674-1.023,11.261-3.05,16.696h-94.074 c-2.027-5.435-3.05-11.021-3.05-16.696c0-27.618,22.469-50.087,50.087-50.087C183.444,166.957,205.913,189.426,205.913,217.043z M372.87,445.217h-33.391V311.652h33.391V445.217z M406.261,183.652v16.696H306.087v-16.696c0-27.618,22.469-50.087,50.087-50.087 C383.792,133.565,406.261,156.034,406.261,183.652z"></path> </g> </g> </g></svg>
                 <span>Wind Chimes</span>
               </div>
               <div class="volume-control">
@@ -1041,6 +1131,72 @@
           <img src="art/deep-breath-preview.png" alt="Buy me a coffee" style="width: 100%; border-radius: 10px;">
           <p style="margin-top: 10px;">This tool can also be used to unwind yourself after a long writing session.</p>
           <p>Thanks for your support! ❤️</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="statisticsModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title custom-modal-title">Statistics</h4>
+        </div>
+        <div class="modal-body modal-container">
+          <div class="statistics-grid">
+            <div class="stat-item">
+              <div class="stat-label">Words</div>
+              <div class="stat-value" id="statWords">0</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">Characters</div>
+              <div class="stat-value" id="statCharacters">0</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">Sentences</div>
+              <div class="stat-value" id="statSentences">0</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">Paragraphs</div>
+              <div class="stat-value" id="statParagraphs">0</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">
+                Avg Word Length
+                <a href="#" data-toggle="tooltip" title="This signifies the complexity and readability of your writing. The more the average word length, the more complex and challenging the reading experience.">
+                  <img src="img/tooltip.svg" alt="Tooltip Icon" />                
+                </a>
+              </div>
+              <div class="stat-value" id="statAvgWordLength">0</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">Reading Time</div>
+              <div class="stat-value" id="statReadingTime">0 min</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">
+                Unique Words
+                <a href="#" data-toggle="tooltip" title="Unique words refer to the distinct words in a text, excluding duplicates. This metric helps in assessing the diversity of vocabulary used in the text.">
+                  <img src="img/tooltip.svg" alt="Tooltip Icon" />                
+                </a>
+              </div>
+              <div class="stat-value" id="statUniqueWords">0</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">
+                Most Common Word
+                <a href="#" data-toggle="tooltip" title="Most common word refers to the word that appears most frequently in a text. This metric helps in assessing the repetition of words in the text.">
+                  <img src="img/tooltip.svg" alt="Tooltip Icon" />                
+                </a>
+              </div>
+              <div class="stat-value" id="statMostCommonWord">N/A</div>
+            </div>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>

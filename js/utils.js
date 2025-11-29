@@ -153,6 +153,67 @@ function calculateCharactersAndWords(str) {
     return wordCountText;
 }
 
+function calculateNoteStatistics(str) {
+    if (!str || str.trim() === '') {
+        return {
+            characters: 0,
+            words: 0,
+            sentences: 0,
+            paragraphs: 0,
+            averageWordLength: 0,
+            readingTime: '0 min',
+            uniqueWords: 0,
+            lexicalDensity: '0%',
+            mostCommonWord: 'N/A'
+        };
+    }
+
+    const characters = str.length;
+    const words = countWords(str);
+    
+    // Count sentences (split by . ! ?)
+    const sentences = str.split(/[.!?]+/).filter(s => s.trim().length > 0).length;
+    
+    // Count paragraphs (split by double newlines or multiple line breaks)
+    const paragraphs = str.split(/\n\n+/).filter(p => p.trim().length > 0).length;
+    
+    // Calculate average word length
+    const averageWordLength = words > 0 ? (characters / words).toFixed(2) : 0;
+    
+    // Calculate reading time (average 200 words per minute)
+    const readingTimeMinutes = Math.ceil(words / 200);
+    const readingTime = readingTimeMinutes === 1 ? '1 min' : `${readingTimeMinutes} mins`;
+    
+    // Calculate unique words and most common word
+    const wordList = str.toLowerCase().match(/\b[a-z']+\b/g) || [];
+    const wordFrequency = {};
+    let maxCount = 0;
+    let mostCommonWord = 'N/A';
+    
+    wordList.forEach(word => {
+        wordFrequency[word] = (wordFrequency[word] || 0) + 1;
+        if (wordFrequency[word] > maxCount) {
+            maxCount = wordFrequency[word];
+            mostCommonWord = word;
+        }
+    });
+    
+    const uniqueWords = Object.keys(wordFrequency).length;
+    const lexicalDensity = words > 0 ? ((uniqueWords / words) * 100).toFixed(1) : 0;
+    
+    return {
+        characters,
+        words,
+        sentences,
+        paragraphs,
+        averageWordLength,
+        readingTime,
+        uniqueWords,
+        lexicalDensity: `${lexicalDensity}%`,
+        mostCommonWord: mostCommonWord.charAt(0).toUpperCase() + mostCommonWord.slice(1)
+    };
+}
+
 function copyNotesToClipboard(note) {
     navigator.clipboard.writeText(note).then(function () {
         showToast('Notes copied to clipboard!')
@@ -206,36 +267,69 @@ function deleteNotes() {
     })
 }
 
+let focusModeHoverTimer = null;
+
 function toggleFocusMode(notepad) {
     const navbar = document.querySelector('.navbar');
-
-    if (!navbar.hasAttribute('style')) {
-        navbar.style.display = 'none';
-    } else {
-        navbar.removeAttribute('style');
-    }
-
     const bodyElement = document.body;
-
-    if (!bodyElement.hasAttribute('style')) {
-        bodyElement.style.paddingTop = '0px';
-    } else {
-        bodyElement.removeAttribute('style');
-    }
-
     const textArea = document.getElementById('note');
+    const closeButton = document.getElementById('focusModeCloseButton');
     
-    if (!textArea.style.borderRight) {
+    // Check if focus mode is currently active
+    const isFocusMode = document.documentElement.hasAttribute('data-focus-mode');
+    
+    if (!isFocusMode) {
+        // Entering focus mode
+        document.documentElement.setAttribute('data-focus-mode', 'true');
+        navbar.style.display = 'none';
+        bodyElement.style.paddingTop = '0';
         textArea.style.borderRight = 'none';
         textArea.style.borderLeft = 'none';
+        
+        // Show close button
+        closeButton.style.display = 'block';
+
+        // Hide toast popup
+        const toastPopup = document.querySelector('.toast-popup');
+        if (toastPopup) {
+            toastPopup.classList.remove('show');
+        }
+        
+        notepad.bottomLine.hide();
+
+        // Keep focus on textarea
+        textArea.focus();
     } else {
-        textArea.style.borderRight = '';
-        textArea.style.borderLeft = '';
+        // Exiting focus mode
+        turnOffFocusMode(notepad);
+    }
+}
+
+// a function for turning off focus mode
+function turnOffFocusMode(notepad) {
+    const navbar = document.querySelector('.navbar');
+    const bodyElement = document.body;
+    const textArea = document.getElementById('note');
+    const closeButton = document.getElementById('focusModeCloseButton');
+    
+    // Remove focus mode
+    document.documentElement.removeAttribute('data-focus-mode');
+    
+    // Hide close button
+    closeButton.style.display = 'none';
+    
+    // Reset styles
+    navbar.style.display = '';
+    bodyElement.style.paddingTop = '';
+    textArea.style.borderRight = '';
+    textArea.style.borderLeft = '';
+    
+    if (localStorage.getItem('userChosenWordCountPillSelected') === 'Yes' || selector().defaultConfig.defaultShowWordCountPill === 'Yes') {
+        notepad.bottomLine.show();
     }
 
-    if (localStorage.getItem('userChosenWordCountPillSelected') == 'Yes') {
-        notepad.wordCountContainer.toggle();
-    }
+    // Keep focus on textarea
+    textArea.focus();
 }
 
 function toggleFullScreen() {

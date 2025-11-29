@@ -20,6 +20,8 @@ This is an offline-capable [Notepad](https://notepad.js.org/) which uses the [Se
   - Keyboard shortcuts for common actions.
   - Dark mode.
   - Writing timer.
+  - Note Statistics.
+  - Ability to mimic typewriter sound when typing.
   - Focus mode (on desktop).
   - Optimal line length for better reading experience.
   - [Floating window](https://www.amitmerchant.com/implementing-interactive-floating-windows-using-picture-in-picture-api/) to effectively take notes on top of other apps (in [supported browsers](https://developer.mozilla.org/en-US/docs/Web/API/Document_Picture-in-Picture_API))
@@ -30,7 +32,7 @@ This is an offline-capable [Notepad](https://notepad.js.org/) which uses the [Se
 
 ![Notepad Mini Tools](/art/minitools.jpeg)
 
-I recently added a bunch of tools that I thought might go along with the regular Notepad — making notepad.js.org a one-stop shop for all the note-taking related needs a step closer.
+I recently added a suite of tools that I thought might go nicely along with the regular Notepad — making notepad.js.org a one-stop shop for all the note-taking related needs a step closer.
 
 - [Rich Text Notes](https://notepad.js.org/rich-text-notes/)
 - [Markdown Editor](https://notepad.js.org/markdown-editor/)
