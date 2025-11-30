@@ -446,13 +446,7 @@ function copyShareableLink() {
         const shareUrl = `${window.location.origin}${window.location.pathname}?note=${compressedNote}`;
 
         navigator.clipboard.writeText(shareUrl).then(function () {
-            Swal.fire({
-                title: 'Link Copied!',
-                text: 'A compressed link to your note is in your clipboard.',
-                icon: 'success',
-                timer: 2000,
-                showConfirmButton: false
-            });
+            showToast('Note link is copied to your clipboard.');
         }, function () {
             showToast('Failed to copy link to clipboard.');
         });

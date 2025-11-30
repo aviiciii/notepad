@@ -610,9 +610,20 @@ $(document).ready(function () {
 		}
 	});
 
-	if (navigator.share && window.self === window.top) {
-		$('#shareNotesContainer').show();
-	}
+
+    if (window.self === window.top) {
+        $('#shareNotesContainer').show();
+    }
+
+    notepad.shareNotes.click(function (e) {
+        e.stopPropagation();
+        if (navigator.share) {
+            const textToShare = notepad.note.val();
+            shareNotes(textToShare);
+        } else {
+            copyShareableLink();
+        }
+    });
 
 	notepad.shareNotes.click(function (e) {
 		e.stopPropagation();
@@ -820,23 +831,18 @@ $(document).ready(function () {
 
     if (sharedNoteCompressed) {
         try {
-            // 1. DECOMPRESS
             let sharedNote = LZString.decompressFromEncodedURIComponent(sharedNoteCompressed);
-
             if (!sharedNote) { 
                 throw new Error("Decompression failed or empty content"); 
             }
 
-            // Get current value directly from DOM to ensure accuracy
             const currentNote = $('#note').val() || '';
 
-            // Helper to clean URL
             const cleanURL = () => {
                 const newUrl = window.location.origin + window.location.pathname;
                 window.history.replaceState({}, document.title, newUrl);
             };
 
-            // Helper to update the UI and Save
             const updateNote = (text) => {
                 notepad.note.val(text);
                 setState('note', text);
@@ -844,13 +850,10 @@ $(document).ready(function () {
                 cleanURL();
             };
 
-            // Scenario A: Local note is empty -> Override immediately
             if (currentNote.trim() === '') {
                 updateNote(sharedNote);
                 showToast('Shared note loaded!');
             } 
-            // Scenario B: Local note exists -> Ask user
-            // Scenario B: Local note exists -> Ask user
             else if (currentNote !== sharedNote) {
                 Swal.fire({
                     title: 'Incoming Shared Note',
@@ -875,14 +878,12 @@ $(document).ready(function () {
                         updateNote(newText);
 
                     } else if (result.dismiss === Swal.DismissReason.cancel) {
-                        // User clicked "Replace existing" (Cancel button slot)
                         updateNote(sharedNote);
 
                     }
-                    // If result.dismiss === Swal.DismissReason.close, we do nothing (User ignored it)
                 });
             } else {
-                cleanURL(); // Notes are identical
+                cleanURL();
             }
         } catch (e) {
             console.error('Error reading shared note:', e);
